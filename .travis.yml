@@ -1,45 +1,49 @@
 language: python
-
 matrix:
   fast_finish: true
   include:
-    - python: "2.7"
-      env: TOXENV=py27
-      os: linux
-    - python: "3.5"
-      env: TOXENV=py35
-      os: linux
-    - python: "3.6"
-      env: TOXENV=py36
-      os: linux
-    - python: "3.7"
-      env: TOXENV=py37
-      os: linux
-      dist: xenial
-    - name: "Python 3.7 on macOS"
-      env: TOXENV=py37
-      os: osx
-      osx_image: xcode10.2
-      language: shell
-    - name: "Python 2.7 on Windows"
-      env: TOXENV=py27 PATH=/c/Python27:/c/Python27/Scripts:$PATH
-      os: windows
-      before_install: choco install python2
-      language: shell
-    - name: "Python 3.5 on Windows"
-      env: TOXENV=py35 PATH=/c/Python35:/c/Python35/Scripts:$PATH
-      os: windows
-      before_install: choco install python3 --version 3.5.4
-      language: shell
-    - name: "Python 3.7 on Windows"
-      env: TOXENV=py37 PATH=/c/Python37:/c/Python37/Scripts:$PATH
-      os: windows
-      before_install: choco install python3 --version 3.7.3
-      language: shell
-
+  - python: '2.7'
+    env: TOXENV=py27
+    os: linux
+  - python: '3.5'
+    env: TOXENV=py35
+    os: linux
+  - python: '3.6'
+    env: TOXENV=py36
+    os: linux
+  - python: '3.7'
+    env: TOXENV=py37
+    os: linux
+    dist: xenial
+  - name: Python 3.7 on macOS
+    env: TOXENV=py37
+    os: osx
+    osx_image: xcode10.2
+    language: shell
+  - name: Python 2.7 on Windows
+    env: TOXENV=py27 PATH=/c/Python27:/c/Python27/Scripts:$PATH
+    os: windows
+    before_install: choco install python2
+    language: shell
+  - name: Python 3.5 on Windows
+    env: TOXENV=py35 PATH=/c/Python35:/c/Python35/Scripts:$PATH
+    os: windows
+    before_install: choco install python3 --version 3.5.4
+    language: shell
+  - name: Python 3.7 on Windows
+    env: TOXENV=py37 PATH=/c/Python37:/c/Python37/Scripts:$PATH
+    os: windows
+    before_install: choco install python3 --version 3.7.3
+    language: shell
 install:
-  - pip install tox
-  - pip install .
-
+- pip install tox
+- pip install .
 script:
-  - tox
+- tox
+deploy:
+  provider: pypi
+  user: marstr
+  password:
+    secure: SP0EUswsbVFBfOmJvWmzt3zNULgxfO7mLsZ8SwPUNttNl6wbOvKLOO6UbSig0AnHD68wWhno7adF4M9auR1ywqcTfRDJnVSk0vjTSDtyaoyxNVliZB9wHJIFPxP65vVQCapgTWwtQ5204aPBwhW9JW7dxaQeHWWMiM1s2pDmNlSr2obRm82vi7yXzm3H8EPf8dK8UI2X96Tpr7IwxIhJSCXb8+5SRGD6vyxr1FfjELj+ZyjOeQgwLNPAgQTHdx0P0eNa04TgZqomTJftEw3iipx8xPgMonMbc0D5Z2B99rv4Svtm2nYojxJ94he6ZquevIjNRa20YleRu2XpaXVr9zR3YWQRHNckTvqKckIrk8pmKAbflLMEeLhOsIUsbDxAPwLun10hG5shdhtRp4rXNkazLH8adRVns2k7zHS5DFQxoO6xbAsXpeQVYnAMwV99gZTHbDftbPayxnaeq8xAzqQ70YCBkTboHZtIu1aQtg+ljrvzkbcFxEZ9ysJmJ0mYAKjXo0DP2X+36kI9J8QzjTfMUMtPaarnRXETXFiQ3uOLeplKdbCchFDIzPmPzawNAeQ/TWhC4d7crxIy81GoFFxFNkePrh+aL/8xJsyuf35ucjMQKHO53aXZELqehUwd81BfW5n18fkuXmox3hSHCBq2M+GX9+uGss0Gs9Jlj1w=
+  on:
+    tags: true
