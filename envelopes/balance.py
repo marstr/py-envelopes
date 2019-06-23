@@ -23,7 +23,7 @@ class Balance(dict):
     """
 
     def __init__(self, value="0"):
-        chunks = value.split(sep=';')
+        chunks = value.split(';')
         for chunk in chunks:
             parsed = TERM_PATTERN.match(chunk)
             if parsed:
