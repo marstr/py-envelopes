@@ -53,6 +53,46 @@ def test_balance_add_single():
         assert tc["answer"] == c[UNITED_STATES]
 
 
+def test_balance_add_multi():
+    a = envelopes.Balance()
+    a[UNITED_STATES] = decimal.Decimal("2.1")
+    a[EUROPEAN_UNION] = decimal.Decimal("1.3")
+
+    b = envelopes.Balance()
+    b[UNITED_STATES] = decimal.Decimal("4.2")
+    b[EUROPEAN_UNION] = decimal.Decimal("2.9")
+
+    c = envelopes.Balance()
+    c[UNITED_STATES] = decimal.Decimal("6.3")
+    c[EUROPEAN_UNION] = decimal.Decimal("4.2")
+
+    d = envelopes.Balance()
+    d[UNITED_STATES] = decimal.Decimal("2.5")
+    d[EUROPEAN_UNION] = decimal.Decimal("4.8")
+
+    test_cases = [
+        {
+            "left": a,
+            "right": b,
+            "answer": c
+        },
+        {
+            "left": envelopes.Balance(UNITED_STATES + " 2.5"),
+            "right": envelopes.Balance(EUROPEAN_UNION + " 4.8"),
+            "answer": d
+        },
+        {
+            "left": envelopes.Balance(EUROPEAN_UNION + " 4.8"),
+            "right": envelopes.Balance(UNITED_STATES + " 2.5"),
+            "answer": d
+        },
+    ]
+
+    for tc in test_cases:
+        ans = tc["left"] + tc["right"]
+        assert tc["answer"] == ans
+
+
 def test_balance_sub_single():
     test_cases = [
         {
