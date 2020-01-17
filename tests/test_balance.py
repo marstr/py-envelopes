@@ -154,6 +154,9 @@ def test_parse_balance():
     negative_ten_dollars = envelopes.Balance()
     negative_ten_dollars[UNITED_STATES] = decimal.Decimal("-10.00")
 
+    two_cents = envelopes.Balance()
+    two_cents[UNITED_STATES] = decimal.Decimal(".02")
+
     test_cases = [
         {
             "raw": "{} 42.00".format(UNITED_STATES),
@@ -171,6 +174,10 @@ def test_parse_balance():
             "raw": "{} -10.00".format(UNITED_STATES),
             "expected": negative_ten_dollars,
         },
+        {
+            "raw": "{} .02".format(UNITED_STATES),
+            "expected": two_cents,
+        }
     ]
 
     for tc in test_cases:
