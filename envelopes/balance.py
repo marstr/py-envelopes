@@ -72,3 +72,6 @@ class Balance(dict):
                 return False
 
         return True
+
+    def __str__(self):
+        return None

@@ -20,7 +20,3 @@ class Budget:
     def __init__(self):
         self.balance = Balance()
         self.children = {}
-
-    def id(self):
-        m = hashlib.sha1()
-        m.update(b'')
