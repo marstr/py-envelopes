@@ -17,4 +17,19 @@ class Accounts:
     def __init__(self):
         self._underlyer = {}
 
+    def id(self):
+        return ""
+
+    def __str__(self):
+        return None
+
+    def __sub__(self, other):
+        retval = Accounts()
+
+        unseen = retval.keys()
+
+        for name, bal in other._underlyer:
+            if name in self._underlyer.keys():
+                unseen.discard(name)
+
 

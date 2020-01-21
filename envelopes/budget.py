@@ -20,3 +20,9 @@ class Budget:
     def __init__(self):
         self.balance = Balance()
         self.children = {}
+
+    def recursive_balance(self):
+        sum = self.balance
+        for _, child in self.children:
+            sum += child
+        return sum

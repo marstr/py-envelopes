@@ -12,4 +12,23 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from .load import load_accounts, load_budget, load_state
+import decimal
+import os
+import pathlib
+
+import envelopes
+import index
+
+
+def test_load_budget_simple():
+    target_dir = pathlib.Path(__file__).parent.absolute()
+    target_dir = os.path.join(target_dir.parent, "testdata", "repo1", "budget")
+
+    subject = index.load_budget(target_dir)
+    wanted_base = envelopes.Balance()
+    wanted_base["USD"] = decimal.Decimal("0")
+    wanted_groecery = envelopes.Balance()
+    wanted_groecery["USD"] = decimal.Decimal("107.92")
+
+    assert subject.balance == wanted_base
+    assert subject.children["grocery"].balance == wanted_groecery
