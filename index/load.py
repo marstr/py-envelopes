@@ -15,21 +15,28 @@
 import os
 from envelopes import Accounts, Balance, Budget, State
 
+BALANCE_FILE = "cash.txt"
+BUDGET_DIRECTORY = "budget"
+ACCOUNTS_DIRECTORY = "accounts"
+
+
+def load_balance(dirname):
+    with open(os.path.join(dirname, BALANCE_FILE)) as handle:
+        contents = handle.read()
+        return Balance(contents)
+
 
 def load_state(dirname):
     retval = State()
-    retval.budget = load_budget(os.path.join(dirname, "budget"))
-    retval.accounts = load_accounts(os.path.join(dirname, "accounts"))
+    retval.budget = load_budget(os.path.join(dirname, BUDGET_DIRECTORY))
+    retval.accounts = load_accounts(os.path.join(dirname, ACCOUNTS_DIRECTORY))
     return retval
 
 
 def load_budget(dirname):
     retval = Budget()
     try:
-        handle = open(os.path.join(dirname, "cash.txt"))
-        contents = handle.read()
-        retval.balance = Balance(contents)
-        handle.close()
+        retval.balance = load_balance(dirname)
     except FileNotFoundError:
         pass
 
@@ -45,5 +52,19 @@ def load_budget(dirname):
 
 def load_accounts(dirname):
     retval = Accounts()
-    def load_accounts_helper(subdirname):
-        subdirname
+
+    def load_accounts_helper(subdir_name):
+        try:
+            retval[subdir_name] = load_balance(dirname)
+        except FileNotFoundError:
+            pass
+
+        children = (child for child in os.scandir(path=subdir_name))
+        for child in children:
+            try:
+                load_accounts_helper(child)
+            except OSError:
+                continue
+
+    load_accounts_helper(dirname)
+    return retval

@@ -23,6 +23,12 @@ class Accounts:
     def __str__(self):
         return None
 
+    def __getitem__(self, item):
+        return self._underlyer[item]
+
+    def __setitem__(self, key, value):
+        self._underlyer[key] = value
+
     def __sub__(self, other):
         retval = Accounts()
 
@@ -32,4 +38,17 @@ class Accounts:
             if name in self._underlyer.keys():
                 unseen.discard(name)
 
+    def __eq__(self, other):
+        unseen = set(self._underlyer.keys())
 
+        for k, v in other._underlyer:
+            if (not k in self._underlyer) or self._underlyer[k] != v:
+                return False
+            unseen.remove(k)
+
+        if len(unseen) > 0:
+            return False
+        return True
+
+    def __len__(self):
+        return len(self._underlyer)

@@ -20,15 +20,25 @@ import envelopes
 import index
 
 
-def test_load_budget_simple():
+def test_load_repo1():
+    wanted_budget_base = envelopes.Balance()
+    wanted_budget_base["USD"] = decimal.Decimal("0")
+    wanted_budget_grocery = envelopes.Balance()
+    wanted_budget_grocery["USD"] = decimal.Decimal("107.92")
+
+    wanted_accounts = envelopes.Accounts()
+    wanted_accounts["checking"] = decimal.Decimal("107.92")
+
     target_dir = pathlib.Path(__file__).parent.absolute()
-    target_dir = os.path.join(target_dir.parent, "testdata", "repo1", "budget")
+    target_dir = os.path.join(target_dir.parent, "testdata", "repo1")
 
-    subject = index.load_budget(target_dir)
-    wanted_base = envelopes.Balance()
-    wanted_base["USD"] = decimal.Decimal("0")
-    wanted_groecery = envelopes.Balance()
-    wanted_groecery["USD"] = decimal.Decimal("107.92")
+    subject = index.load_state(target_dir)
 
-    assert subject.balance == wanted_base
-    assert subject.children["grocery"].balance == wanted_groecery
+    assert subject.budget.balance == wanted_budget_base
+    assert subject.budget.children["grocery"].balance == wanted_budget_grocery
+
+    assert len(subject.accounts) == 1
+    assert 'checking' in subject.accounts.keys
+
+
+
