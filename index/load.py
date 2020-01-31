@@ -50,21 +50,26 @@ def load_budget(dirname):
     return retval
 
 
-def load_accounts(dirname):
+def load_accounts(dir):
+    """ Populates a dictionary to reflect the contents of the accounts in a `baronial` index.
+    :param dir: The accounts folder of a `baronial` index.
+    :return: A dictionary mapping the name of an account to the balance held in that account.
+    """
     retval = Accounts()
 
-    def load_accounts_helper(subdir_name):
+    def load_accounts_helper(subdir):
         try:
-            retval[subdir_name] = load_balance(dirname)
+            account_name = os.path.relpath(subdir, dir)
+            retval[account_name] = load_balance(subdir)
         except FileNotFoundError:
             pass
 
-        children = (child for child in os.scandir(path=subdir_name))
+        children = (child for child in os.scandir(path=subdir) if child.is_dir())
         for child in children:
             try:
                 load_accounts_helper(child)
             except OSError:
                 continue
 
-    load_accounts_helper(dirname)
+    load_accounts_helper(dir)
     return retval

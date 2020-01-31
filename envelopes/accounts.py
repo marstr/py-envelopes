@@ -13,21 +13,9 @@
 #  limitations under the License.
 
 
-class Accounts:
+class Accounts(dict):
     def __init__(self):
         self._underlyer = {}
-
-    def id(self):
-        return ""
-
-    def __str__(self):
-        return None
-
-    def __getitem__(self, item):
-        return self._underlyer[item]
-
-    def __setitem__(self, key, value):
-        self._underlyer[key] = value
 
     def __sub__(self, other):
         retval = Accounts()
@@ -49,6 +37,3 @@ class Accounts:
         if len(unseen) > 0:
             return False
         return True
-
-    def __len__(self):
-        return len(self._underlyer)
